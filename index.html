@@ -31,22 +31,9 @@
 
   /* ---- Barra de acciones ---- */
   .acciones {
-    display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
-    position: sticky; top: 0; z-index: 10;
-    padding: 10px 0; background: var(--fondo);
+    display: none;
   }
-  .acciones button {
-    border: 1px solid var(--borde); background: var(--blanco); color: var(--tinta);
-    padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
-  }
-  .acciones button:hover { border-color: var(--azul); color: var(--azul); }
-  body.editando .acciones #btn-editar { background: var(--azul); color: #fff; border-color: var(--azul); }
-  .aviso-edicion {
-    display: none; background: #e8f1fb; border: 1px solid #bcd7f2; color: #2a5a8c;
-    padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px;
-  }
-  body.editando .aviso-edicion { display: block; }
-  body.editando [data-edit] { outline: 2px dashed var(--azul); outline-offset: 2px; border-radius: 4px; cursor: text; }
+  .aviso-edicion { display: none !important; }
 
   /* ---- Cabecera ---- */
   .hero { text-align: center; padding: 18px 10px 6px; }
