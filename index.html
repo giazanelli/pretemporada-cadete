@@ -113,9 +113,35 @@
   details[open] .abrir { display: none; }
 
   .cuerpo-sesion { padding: 4px 12px 12px; border-top: 1px solid var(--borde); }
-  .bloque { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--fondo); }
+
+  /* ---- Ilustraciones de ejercicios ---- */
+  .bloque {
+    display: grid;
+    grid-template-columns: 72px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 12px 0;
+  }
+  .bloque .punto { display: none; }
+  .ilustra {
+    width: 72px; height: 72px;
+    border-radius: 14px;
+    background: var(--fondo);
+    border: 1px solid var(--borde);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ilustra svg { width: 54px; height: 54px; }
+  .bloque-texto { min-width: 0; }
+  @media (max-width: 720px) {
+    .bloque { grid-template-columns: 64px 1fr; gap: 10px; }
+    .ilustra { width: 64px; height: 64px; border-radius: 12px; }
+    .ilustra svg { width: 48px; height: 48px; }
+  }
+  @media print {
+    .ilustra { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
   .bloque:last-child { border-bottom: none; }
-  .bloque .punto { margin-top: 4px; flex-shrink: 0; }
   .bloque b { font-size: 13px; }
   .bloque .min { font-size: 12px; color: var(--tinta-2); font-weight: 700; margin-left: 4px; }
   .bloque p { font-size: 12.5px; color: var(--tinta-2); margin-top: 1px; }
@@ -157,6 +183,80 @@
 </head>
 <body>
 <div class="contenedor">
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-calentamiento" viewBox="0 0 64 64">
+    <circle cx="32" cy="12" r="5" fill="none" stroke="#5a6272" stroke-width="2.5"/>
+    <path d="M22 24c4-4 16-4 20 0l4 14h-6l-2-8-4 6v16h-6V36l-4-6-2 8h-6z" fill="none" stroke="#5a6272" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M18 22c-6 2-8 8-6 12M46 22c6 2 8 8 6 12" fill="none" stroke="#3d7fc1" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-correr" viewBox="0 0 64 64">
+    <circle cx="40" cy="12" r="5" fill="none" stroke="#3d7fc1" stroke-width="2.5"/>
+    <path d="M28 24l8 4 6-2 4 10-8 2-4 8-8-2 4-10-8-4z" fill="none" stroke="#3d7fc1" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M18 50l10-6M46 34l8 10" fill="none" stroke="#3d7fc1" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M10 56h12M42 56h12" fill="none" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-intervalos" viewBox="0 0 64 64">
+    <circle cx="32" cy="12" r="5" fill="none" stroke="#3d7fc1" stroke-width="2.5"/>
+    <path d="M24 24h16l2 12-6 4v14h-8V40l-6-4z" fill="none" stroke="#3d7fc1" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M12 28v20M20 32v12M44 32v12M52 28v20" fill="none" stroke="#e07a3f" stroke-width="3" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-sprint" viewBox="0 0 64 64">
+    <circle cx="42" cy="11" r="5" fill="none" stroke="#d9534f" stroke-width="2.5"/>
+    <path d="M26 22l12 6 8-4 2 12-10 2-2 14h-8l2-12-10-6z" fill="none" stroke="#d9534f" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M8 20l10 4M8 30l12 2M8 40l10 0" fill="none" stroke="#e07a3f" stroke-width="2.5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-fuerza" viewBox="0 0 64 64">
+    <circle cx="32" cy="10" r="5" fill="none" stroke="#7b5cc4" stroke-width="2.5"/>
+    <path d="M24 20h16v10l6 8v16h-8V42l-4-6h-4l-4 6v12h-8V38l6-8z" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="8" y="26" width="10" height="8" rx="2" fill="none" stroke="#7b5cc4" stroke-width="2.2"/>
+    <rect x="46" y="26" width="10" height="8" rx="2" fill="none" stroke="#7b5cc4" stroke-width="2.2"/>
+    <path d="M18 30h28" fill="none" stroke="#7b5cc4" stroke-width="2.5"/>
+  </symbol>
+  <symbol id="i-flexiones" viewBox="0 0 64 64">
+    <circle cx="50" cy="18" r="4.5" fill="none" stroke="#7b5cc4" stroke-width="2.4"/>
+    <path d="M10 40h12l10-8 12 4 8-2" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14 40v8M46 34v10" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8 50h48" fill="none" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-mochila" viewBox="0 0 64 64">
+    <circle cx="32" cy="10" r="5" fill="none" stroke="#7b5cc4" stroke-width="2.5"/>
+    <path d="M22 22h20v12l4 6v14H18V40l4-6z" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linejoin="round"/>
+    <rect x="26" y="18" width="12" height="14" rx="2" fill="none" stroke="#e5a83b" stroke-width="2.2"/>
+    <path d="M28 24h8" fill="none" stroke="#e5a83b" stroke-width="2"/>
+  </symbol>
+  <symbol id="i-core" viewBox="0 0 64 64">
+    <circle cx="16" cy="28" r="4.5" fill="none" stroke="#e5a83b" stroke-width="2.4"/>
+    <path d="M20 30h28" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M24 30v-8M48 30v-8" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M28 30v18M44 30v18" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M12 50h40" fill="none" stroke="#9aa0a6" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-estirar" viewBox="0 0 64 64">
+    <circle cx="20" cy="14" r="5" fill="none" stroke="#5a6272" stroke-width="2.5"/>
+    <path d="M22 22c8 2 14 10 16 18l8 12" fill="none" stroke="#5a6272" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24 34l-10 8M30 28l14-8" fill="none" stroke="#5a6272" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M44 20c6-6 14-4 16 2" fill="none" stroke="#2f9e63" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-hiit" viewBox="0 0 64 64">
+    <circle cx="32" cy="12" r="5" fill="none" stroke="#e07a3f" stroke-width="2.5"/>
+    <path d="M24 24h16l-2 10 8 6-4 14h-8l2-10-8-4z" fill="none" stroke="#e07a3f" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M12 18l4 8-4 4 6 10M52 18l-4 8 4 4-6 10" fill="none" stroke="#d9534f" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="i-salto" viewBox="0 0 64 64">
+    <circle cx="32" cy="8" r="4.5" fill="none" stroke="#7b5cc4" stroke-width="2.4"/>
+    <path d="M24 18h16l-2 10 8 4-2 8H20l-2-8 8-4z" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M20 44l-4 10M44 44l4 10" fill="none" stroke="#7b5cc4" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M28 28v-8M36 28v-8" fill="none" stroke="#e5a83b" stroke-width="2.2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-prevencion" viewBox="0 0 64 64">
+    <circle cx="32" cy="12" r="5" fill="none" stroke="#e5a83b" stroke-width="2.5"/>
+    <path d="M32 20v16" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M22 28h20" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M32 36l-10 16M32 36l10 16" fill="none" stroke="#e5a83b" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="32" cy="48" r="10" fill="none" stroke="#2f9e63" stroke-width="2.2" stroke-dasharray="3 3"/>
+  </symbol>
+</svg>
+
 
   <div class="acciones">
     <button id="btn-editar" type="button">Editar textos</button>
@@ -208,10 +308,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1a-b1d">Movilidad de tobillos, caderas y espalda + 5' de trote muy suave para entrar en calor.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s1a-b2">Rodaje continuo</b><span class="min">30'</span><p data-edit="s1a-b2d">Sal a correr a ritmo cómodo: tienes que poder hablar mientras corres. Si te ahogas, baja el ritmo. Hoy toca coger fondo, no ir rápido.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s1a-b3">Core</b><span class="min">10'</span><p data-edit="s1a-b3d">3 rondas: plancha 30" · plancha lateral 20" por lado · puente glúteo ×15.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1a-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1a-b4d">Isquios, cuádriceps, aductores y gemelos, 30" por músculo.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s1a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1a-b1d">Movilidad de tobillos, caderas y espalda + 5' de trote muy suave para entrar en calor.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-correr"/></svg></div><div class="bloque-texto"><b data-edit="s1a-b2">Rodaje continuo</b><span class="min">30'</span><p data-edit="s1a-b2d">Sal a correr a ritmo cómodo: tienes que poder hablar mientras corres. Si te ahogas, baja el ritmo. Hoy toca coger fondo, no ir rápido.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-core"/></svg></div><div class="bloque-texto"><b data-edit="s1a-b3">Core</b><span class="min">10'</span><p data-edit="s1a-b3d">3 rondas: plancha 30" · plancha lateral 20" por lado · puente glúteo ×15.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s1a-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1a-b4d">Isquios, cuádriceps, aductores y gemelos, 30" por músculo.</p></div></div>
         </div>
       </details>
 
@@ -223,10 +323,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1b-b1d">Movilidad general + 2 series de 10 sentadillas sin peso.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s1b-b2">Fuerza con tu cuerpo</b><span class="min">25'</span><p data-edit="s1b-b2d">3 rondas: sentadilla ×15 · zancada ×10 por pierna · flexiones ×10-12 · remo con mochila ×12 · talones ×20. Descansa 1' entre rondas.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s1b-b3">Circuito de flexiones</b><span class="min">20'</span><p data-edit="s1b-b3d">3 rondas: flexiones normales ×12 · flexiones con manos juntas ×8 · flexiones con manos abiertas ×8 · fondos en silla ×10. Descansa 60" entre rondas. Si te cuesta, hazlas de rodillas.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s1b-b4">Prevención</b><span class="min">10'</span><p data-edit="s1b-b4d">Nórdicos de isquios frenando con las manos 2×5 + equilibrio a una pierna con ojos cerrados 3×30".</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s1b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1b-b1d">Movilidad general + 2 series de 10 sentadillas sin peso.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-fuerza"/></svg></div><div class="bloque-texto"><b data-edit="s1b-b2">Fuerza con tu cuerpo</b><span class="min">25'</span><p data-edit="s1b-b2d">3 rondas: sentadilla ×15 · zancada ×10 por pierna · flexiones ×10-12 · remo con mochila ×12 · talones ×20. Descansa 1' entre rondas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-flexiones"/></svg></div><div class="bloque-texto"><b data-edit="s1b-b3">Circuito de flexiones</b><span class="min">20'</span><p data-edit="s1b-b3d">3 rondas: flexiones normales ×12 · flexiones con manos juntas ×8 · flexiones con manos abiertas ×8 · fondos en silla ×10. Descansa 60" entre rondas. Si te cuesta, hazlas de rodillas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-prevencion"/></svg></div><div class="bloque-texto"><b data-edit="s1b-b4">Prevención</b><span class="min">10'</span><p data-edit="s1b-b4d">Nórdicos de isquios frenando con las manos 2×5 + equilibrio a una pierna con ojos cerrados 3×30".</p></div></div>
         </div>
       </details>
 
@@ -240,10 +340,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1c-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1c-b1d">Movilidad + trote muy suave progresivo.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s1c-b2">Fartlek</b><span class="min">25'</span><p data-edit="s1c-b2d">Sal a correr con cambios de ritmo: 5 veces (3' a ritmo medio + 2' muy suave). El ritmo medio cuesta, pero aguantas.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s1c-b3">Flexiones + remo</b><span class="min">10'</span><p data-edit="s1c-b3d">Al volver: 3 series de flexiones ×10 + remo con mochila ×12. Descansa 45" entre series.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1c-b4d">Cadera, isquios y tobillos con calma.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s1c-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1c-b1d">Movilidad + trote muy suave progresivo.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-correr"/></svg></div><div class="bloque-texto"><b data-edit="s1c-b2">Fartlek</b><span class="min">25'</span><p data-edit="s1c-b2d">Sal a correr con cambios de ritmo: 5 veces (3' a ritmo medio + 2' muy suave). El ritmo medio cuesta, pero aguantas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-flexiones"/></svg></div><div class="bloque-texto"><b data-edit="s1c-b3">Flexiones + remo</b><span class="min">10'</span><p data-edit="s1c-b3d">Al volver: 3 series de flexiones ×10 + remo con mochila ×12. Descansa 45" entre series.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s1c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1c-b4d">Cadera, isquios y tobillos con calma.</p></div></div>
         </div>
       </details>
 
@@ -271,10 +371,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2a-b1d">Movilidad + trote progresivo con 2-3 aceleraciones suaves.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2a-b2">Intervalos</b><span class="min">30'</span><p data-edit="s2a-b2d">4 veces: 5' a ritmo alto (te cuesta hablar) + 2' andando. También vale en escaleras.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2a-b3">Core avanzado</b><span class="min">15'</span><p data-edit="s2a-b3d">3 rondas: plancha con toque de hombro ×10 · plancha lateral con subida de cadera ×8 · V-ups ×10 · superman ×12.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s2a-b4d">Trote muy suave + estiramientos.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s2a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2a-b1d">Movilidad + trote progresivo con 2-3 aceleraciones suaves.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-intervalos"/></svg></div><div class="bloque-texto"><b data-edit="s2a-b2">Intervalos</b><span class="min">30'</span><p data-edit="s2a-b2d">4 veces: 5' a ritmo alto (te cuesta hablar) + 2' andando. También vale en escaleras.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-core"/></svg></div><div class="bloque-texto"><b data-edit="s2a-b3">Core avanzado</b><span class="min">15'</span><p data-edit="s2a-b3d">3 rondas: plancha con toque de hombro ×10 · plancha lateral con subida de cadera ×8 · V-ups ×10 · superman ×12.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s2a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s2a-b4d">Trote muy suave + estiramientos.</p></div></div>
         </div>
       </details>
 
@@ -286,10 +386,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2b-b1d">Movilidad + 2 series suaves de aproximación.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s2b-b2">Fuerza con mochila</b><span class="min">30'</span><p data-edit="s2b-b2d">4 rondas: sentadilla con mochila ×12 · zancada búlgara (pie en silla) ×8 por pierna · flexiones con pies elevados ×10 · remo con mochila ×12 · puente glúteo a una pierna ×10.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s2b-b3">Extra de pecho y hombros</b><span class="min">20'</span><p data-edit="s2b-b3d">4 rondas: flexiones diamante ×8 · press militar con botellas o mochila ×12 · fondos en silla ×12 · elevaciones laterales con botellas ×12. Descansa 60" entre rondas.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2b-b4">Prevención</b><span class="min">10'</span><p data-edit="s2b-b4d">Nórdicos 2×6 · saltos a una pierna aterrizando suave 2×8 · aprieta un cojín entre las rodillas 3×20".</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s2b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2b-b1d">Movilidad + 2 series suaves de aproximación.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-mochila"/></svg></div><div class="bloque-texto"><b data-edit="s2b-b2">Fuerza con mochila</b><span class="min">30'</span><p data-edit="s2b-b2d">4 rondas: sentadilla con mochila ×12 · zancada búlgara (pie en silla) ×8 por pierna · flexiones con pies elevados ×10 · remo con mochila ×12 · puente glúteo a una pierna ×10.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-flexiones"/></svg></div><div class="bloque-texto"><b data-edit="s2b-b3">Extra de pecho y hombros</b><span class="min">20'</span><p data-edit="s2b-b3d">4 rondas: flexiones diamante ×8 · press militar con botellas o mochila ×12 · fondos en silla ×12 · elevaciones laterales con botellas ×12. Descansa 60" entre rondas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-prevencion"/></svg></div><div class="bloque-texto"><b data-edit="s2b-b4">Prevención</b><span class="min">10'</span><p data-edit="s2b-b4d">Nórdicos 2×6 · saltos a una pierna aterrizando suave 2×8 · aprieta un cojín entre las rodillas 3×20".</p></div></div>
         </div>
       </details>
 
@@ -303,10 +403,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2d-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2d-b1d">Movilidad general + trote muy suave para entrar en calor.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2d-b2">Rodaje progresivo</b><span class="min">35'</span><p data-edit="s2d-b2d">Sal a correr: 20' cómodo + 10' a ritmo medio (cuesta hablar, pero aguantas) + 5' muy suave para acabar. Es la salida larga de la semana.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2d-b3">Core</b><span class="min">10'</span><p data-edit="s2d-b3d">3 rondas rápidas: plancha 30" · plancha lateral 20" por lado · V-ups ×10.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2d-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2d-b4d">Piernas completas, sobre todo isquios y gemelos.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s2d-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2d-b1d">Movilidad general + trote muy suave para entrar en calor.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-correr"/></svg></div><div class="bloque-texto"><b data-edit="s2d-b2">Rodaje progresivo</b><span class="min">35'</span><p data-edit="s2d-b2d">Sal a correr: 20' cómodo + 10' a ritmo medio (cuesta hablar, pero aguantas) + 5' muy suave para acabar. Es la salida larga de la semana.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-core"/></svg></div><div class="bloque-texto"><b data-edit="s2d-b3">Core</b><span class="min">10'</span><p data-edit="s2d-b3d">3 rondas rápidas: plancha 30" · plancha lateral 20" por lado · V-ups ×10.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s2d-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2d-b4d">Piernas completas, sobre todo isquios y gemelos.</p></div></div>
         </div>
       </details>
 
@@ -318,10 +418,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2c-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s2c-b1d">Completo y progresivo: movilidad, skipping y 3-4 aceleraciones al 70-80 %.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2c-b2">HIIT — 2 bloques</b><span class="min">20'</span><p data-edit="s2c-b2d">Haz 2 bloques. En cada bloque haces estos 8 ejercicios, 30" a tope + 30" de descanso entre ejercicios. Entre el bloque 1 y el 2, recupera 3' andando. Orden: 1) Skipping alto · 2) Flexiones · 3) Sentadilla con salto · 4) Mountain climbers · 5) Burpees · 6) Jumping jacks · 7) Zancadas alternas · 8) Plancha con toques de hombro. Si no puedes completar las flexiones o burpees, baja a rodillas pero no pares.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s2c-b3">Finisher de flexiones</b><span class="min">15'</span><p data-edit="s2c-b3d">3 rondas: flexiones × max (sin llegar a fallar) · remo con mochila ×15 · fondos en silla ×12. Descansa 90" entre rondas.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2c-b4d">Piernas completas, sobre todo isquios y gemelos + pecho y hombros.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s2c-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s2c-b1d">Completo y progresivo: movilidad, skipping y 3-4 aceleraciones al 70-80 %.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-hiit"/></svg></div><div class="bloque-texto"><b data-edit="s2c-b2">HIIT — 2 bloques</b><span class="min">20'</span><p data-edit="s2c-b2d">Haz 2 bloques. En cada bloque haces estos 8 ejercicios, 30" a tope + 30" de descanso entre ejercicios. Entre el bloque 1 y el 2, recupera 3' andando. Orden: 1) Skipping alto · 2) Flexiones · 3) Sentadilla con salto · 4) Mountain climbers · 5) Burpees · 6) Jumping jacks · 7) Zancadas alternas · 8) Plancha con toques de hombro. Si no puedes completar las flexiones o burpees, baja a rodillas pero no pares.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-flexiones"/></svg></div><div class="bloque-texto"><b data-edit="s2c-b3">Finisher de flexiones</b><span class="min">15'</span><p data-edit="s2c-b3d">3 rondas: flexiones × max (sin llegar a fallar) · remo con mochila ×15 · fondos en silla ×12. Descansa 90" entre rondas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s2c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2c-b4d">Piernas completas, sobre todo isquios y gemelos + pecho y hombros.</p></div></div>
         </div>
       </details>
 
@@ -349,10 +449,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3a-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s3a-b1d">Progresivo con 3-4 aceleraciones al 80 %.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s3a-b2">Intervalos</b><span class="min">25'</span><p data-edit="s3a-b2d">6 veces: 2' fuerte + 90" muy suave. Cuesta acabar cada repetición, pero corre limpio.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s3a-b3">Core</b><span class="min">12'</span><p data-edit="s3a-b3d">3 rondas rápidas del core avanzado.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s3a-b4d">Trote suave + estiramientos.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s3a-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s3a-b1d">Progresivo con 3-4 aceleraciones al 80 %.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-intervalos"/></svg></div><div class="bloque-texto"><b data-edit="s3a-b2">Intervalos</b><span class="min">25'</span><p data-edit="s3a-b2d">6 veces: 2' fuerte + 90" muy suave. Cuesta acabar cada repetición, pero corre limpio.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-core"/></svg></div><div class="bloque-texto"><b data-edit="s3a-b3">Core</b><span class="min">12'</span><p data-edit="s3a-b3d">3 rondas rápidas del core avanzado.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s3a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s3a-b4d">Trote suave + estiramientos.</p></div></div>
         </div>
       </details>
 
@@ -364,10 +464,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s3b-b1d">Movilidad + series de aproximación.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s3b-b2">Fuerza con mochila</b><span class="min">30'</span><p data-edit="s3b-b2d">La rutina con mochila de la semana 2 (4 rondas), subiendo rápido y bajando controlado.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s3b-b3">Circuito intenso de flexiones</b><span class="min">20'</span><p data-edit="s3b-b3d">4 rondas sin parar casi: flexiones ×15 · flexiones con palmada (o explosivas) ×8 · fondos en silla ×12 · remo con mochila ×15. Descansa 75" entre rondas.</p></div></div>
-          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s3b-b4">Prevención</b><span class="min">10'</span><p data-edit="s3b-b4d">Nórdicos 2×6 + equilibrio a una pierna 3×30" por lado.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s3b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s3b-b1d">Movilidad + series de aproximación.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-mochila"/></svg></div><div class="bloque-texto"><b data-edit="s3b-b2">Fuerza con mochila</b><span class="min">30'</span><p data-edit="s3b-b2d">La rutina con mochila de la semana 2 (4 rondas), subiendo rápido y bajando controlado.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-flexiones"/></svg></div><div class="bloque-texto"><b data-edit="s3b-b3">Circuito intenso de flexiones</b><span class="min">20'</span><p data-edit="s3b-b3d">4 rondas sin parar casi: flexiones ×15 · flexiones con palmada (o explosivas) ×8 · fondos en silla ×12 · remo con mochila ×15. Descansa 75" entre rondas.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-prevencion"/></svg></div><div class="bloque-texto"><b data-edit="s3b-b4">Prevención</b><span class="min">10'</span><p data-edit="s3b-b4d">Nórdicos 2×6 + equilibrio a una pierna 3×30" por lado.</p></div></div>
         </div>
       </details>
 
@@ -381,10 +481,10 @@
           <span class="abrir">Ver entreno ▾</span>
         </summary>
         <div class="cuerpo-sesion">
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3c-b1">Calentamiento largo</b><span class="min">15'</span><p data-edit="s3c-b1d">El más importante de todos: movilidad completa, técnica de carrera y 4-5 progresiones del 60 al 90 %. No te lo saltes.</p></div></div>
-          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s3c-b2">Sprints</b><span class="min">20'</span><p data-edit="s3c-b2d">8-10 sprints de 20-30 m al máximo, descansando 90" andando entre cada uno. Si notas algo raro en los isquios, PARA.</p></div></div>
-          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s3c-b3">Saltos</b><span class="min">10'</span><p data-edit="s3c-b3d">Saltos verticales 3×5 · saltos laterales 3×8 · salto desde un escalón bajo aterrizando suave 2×5.</p></div></div>
-          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3c-b4">Estiramientos</b><span class="min">15'</span><p data-edit="s3c-b4d">Sesión completa, sin prisa.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-calentamiento"/></svg></div><div class="bloque-texto"><b data-edit="s3c-b1">Calentamiento largo</b><span class="min">15'</span><p data-edit="s3c-b1d">El más importante de todos: movilidad completa, técnica de carrera y 4-5 progresiones del 60 al 90 %. No te lo saltes.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-sprint"/></svg></div><div class="bloque-texto"><b data-edit="s3c-b2">Sprints</b><span class="min">20'</span><p data-edit="s3c-b2d">8-10 sprints de 20-30 m al máximo, descansando 90" andando entre cada uno. Si notas algo raro en los isquios, PARA.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-salto"/></svg></div><div class="bloque-texto"><b data-edit="s3c-b3">Saltos</b><span class="min">10'</span><p data-edit="s3c-b3d">Saltos verticales 3×5 · saltos laterales 3×8 · salto desde un escalón bajo aterrizando suave 2×5.</p></div></div>
+          <div class="bloque"><div class="ilustra" aria-hidden="true"><svg viewBox="0 0 64 64"><use href="#i-estirar"/></svg></div><div class="bloque-texto"><b data-edit="s3c-b4">Estiramientos</b><span class="min">15'</span><p data-edit="s3c-b4d">Sesión completa, sin prisa.</p></div></div>
         </div>
       </details>
 
