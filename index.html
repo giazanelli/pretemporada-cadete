@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pre-pretemporada Cadete · 11–31 agosto</title>
+<style>
+  :root {
+    --verde: #2f9e63;
+    --ambar: #e5a83b;
+    --naranja: #e07a3f;
+    --rojo: #d9534f;
+    --azul: #3d7fc1;
+    --morado: #7b5cc4;
+    --teal: #2a9a8a;
+    --gris: #9aa0a6;
+    --tinta: #1f2430;
+    --tinta-2: #5a6272;
+    --fondo: #f4f6f9;
+    --blanco: #ffffff;
+    --borde: #e3e7ee;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--fondo);
+    color: var(--tinta);
+    line-height: 1.45;
+  }
+  .contenedor { max-width: 980px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  /* ---- Barra de acciones ---- */
+  .acciones {
+    display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
+    position: sticky; top: 0; z-index: 10;
+    padding: 10px 0; background: var(--fondo);
+  }
+  .acciones button {
+    border: 1px solid var(--borde); background: var(--blanco); color: var(--tinta);
+    padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .acciones button:hover { border-color: var(--azul); color: var(--azul); }
+  body.editando .acciones #btn-editar { background: var(--azul); color: #fff; border-color: var(--azul); }
+  .aviso-edicion {
+    display: none; background: #e8f1fb; border: 1px solid #bcd7f2; color: #2a5a8c;
+    padding: 10px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 14px;
+  }
+  body.editando .aviso-edicion { display: block; }
+  body.editando [data-edit] { outline: 2px dashed var(--azul); outline-offset: 2px; border-radius: 4px; cursor: text; }
+
+  /* ---- Cabecera ---- */
+  .hero { text-align: center; padding: 18px 10px 6px; }
+  .hero h1 { font-size: 28px; letter-spacing: -0.5px; }
+  .hero p { color: var(--tinta-2); margin-top: 6px; font-size: 15px; }
+  .datos { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 18px 0 4px; }
+  .dato {
+    background: var(--blanco); border: 1px solid var(--borde); border-radius: 14px;
+    padding: 12px 20px; text-align: center; min-width: 110px;
+  }
+  .dato .num { font-size: 26px; font-weight: 800; }
+  .dato .txt { font-size: 12px; color: var(--tinta-2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  /* ---- Leyenda RPE ---- */
+  .leyenda { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 14px 0 6px; font-size: 13px; color: var(--tinta-2); }
+  .leyenda span { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+  .punto { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+  /* ---- Semanas ---- */
+  .semana { margin-top: 34px; }
+  .semana-cab {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    border-left: 6px solid; padding-left: 12px; margin-bottom: 6px;
+  }
+  .semana-cab h2 { font-size: 20px; }
+  .semana-cab .fase { font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 12px; color: #fff; }
+  .semana-cab .fechas { font-size: 13px; color: var(--tinta-2); font-weight: 600; }
+  .semana-obj { color: var(--tinta-2); font-size: 14px; margin: 4px 0 14px 18px; }
+  .s1 .semana-cab { border-color: var(--verde); } .s1 .fase { background: var(--verde); }
+  .s2 .semana-cab { border-color: var(--ambar); } .s2 .fase { background: var(--ambar); }
+  .s3 .semana-cab { border-color: var(--rojo); } .s3 .fase { background: var(--rojo); }
+
+  /* ---- Calendario ---- */
+  .calendario { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+  @media (max-width: 720px) { .calendario { grid-template-columns: 1fr; } }
+  .dia-nombre { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--tinta-2); text-align: center; padding-bottom: 2px; }
+  @media (max-width: 720px) { .dia-nombre { display: none; } }
+
+  .descanso {
+    border: 1.5px dashed var(--borde); border-radius: 12px; padding: 10px; min-height: 96px;
+    color: var(--gris); font-size: 12px; background: transparent;
+  }
+  .descanso .fecha { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+
+  details.entreno {
+    border: 1px solid var(--borde); border-radius: 12px; background: var(--blanco);
+    overflow: hidden; border-top: 5px solid var(--gris);
+  }
+  details.entreno.rpe5 { border-top-color: var(--verde); }
+  details.entreno.rpe6 { border-top-color: var(--ambar); }
+  details.entreno.rpe7 { border-top-color: var(--naranja); }
+  details.entreno.rpe8 { border-top-color: var(--rojo); }
+  details.entreno summary {
+    cursor: pointer; padding: 10px; list-style: none; min-height: 91px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  details.entreno summary::-webkit-details-marker { display: none; }
+  /* La sesión abierta ocupa todo el ancho para que se lea cómodamente */
+  @media (min-width: 721px) {
+    details.entreno[open] { grid-column: 1 / -1; }
+    details.entreno[open] summary { min-height: 0; flex-direction: row; align-items: center; gap: 12px; flex-wrap: wrap; }
+    details.entreno[open] summary .chips { margin-top: 0; margin-left: auto; }
+    details.entreno[open] .cuerpo-sesion { columns: 2; column-gap: 28px; }
+    details.entreno[open] .bloque { break-inside: avoid; }
+  }
+  details.entreno[open] summary::after { content: "Cerrar ▴"; font-size: 11px; color: var(--azul); font-weight: 700; }
+  .fecha { font-weight: 800; font-size: 13px; }
+  .titulo-sesion { font-size: 13px; font-weight: 700; line-height: 1.25; }
+  .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: auto; }
+  .chip { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; background: var(--fondo); color: var(--tinta-2); }
+  .chip.rpe { color: #fff; }
+  .rpe5 .chip.rpe { background: var(--verde); }
+  .rpe6 .chip.rpe { background: var(--ambar); }
+  .rpe7 .chip.rpe { background: var(--naranja); }
+  .rpe8 .chip.rpe { background: var(--rojo); }
+  .abrir { font-size: 11px; color: var(--azul); font-weight: 700; }
+  details[open] .abrir { display: none; }
+
+  .cuerpo-sesion { padding: 4px 12px 12px; border-top: 1px solid var(--borde); }
+  .bloque { display: flex; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--fondo); }
+  .bloque:last-child { border-bottom: none; }
+  .bloque .punto { margin-top: 4px; flex-shrink: 0; }
+  .bloque b { font-size: 13px; }
+  .bloque .min { font-size: 12px; color: var(--tinta-2); font-weight: 700; margin-left: 4px; }
+  .bloque p { font-size: 12.5px; color: var(--tinta-2); margin-top: 1px; }
+  .t-movilidad { background: var(--gris); }
+  .t-condicional { background: var(--azul); }
+  .t-fuerza { background: var(--morado); }
+  .t-tecnica { background: var(--verde); }
+  .t-prevencion { background: var(--ambar); }
+
+  /* ---- Secciones finales ---- */
+  .seccion { margin-top: 36px; }
+  .seccion h2 { font-size: 19px; margin-bottom: 10px; }
+  .tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; }
+  .tarjeta { background: var(--blanco); border: 1px solid var(--borde); border-radius: 12px; padding: 14px; }
+  .tarjeta h3 { font-size: 14px; margin-bottom: 6px; }
+  .tarjeta p, .tarjeta li { font-size: 13px; color: var(--tinta-2); }
+  .tarjeta ul { padding-left: 18px; }
+
+  .barra-rpe { display: flex; gap: 3px; margin: 10px 0 6px; }
+  .barra-rpe div {
+    flex: 1; height: 30px; border-radius: 6px; color: #fff; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .rpe-textos { display: flex; justify-content: space-between; font-size: 12px; color: var(--tinta-2); font-weight: 600; }
+
+  /* ---- Impresión ---- */
+  @media print {
+    .acciones, .aviso-edicion, .abrir, .pista-toque { display: none !important; }
+    details.entreno[open] summary::after { content: none; }
+    body { background: #fff; }
+    .contenedor { max-width: 100%; padding: 0; }
+    details.entreno { break-inside: avoid; }
+    .semana { margin-top: 20px; }
+    .semana-cab, .semana-obj { break-after: avoid; }
+    .seccion { break-inside: avoid; }
+    .calendario { grid-template-columns: repeat(7, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="contenedor">
+
+  <div class="acciones">
+    <button id="btn-editar" type="button">Editar textos</button>
+    <button id="btn-guardar" type="button">Guardar copia editada</button>
+    <button id="btn-imprimir" type="button">Imprimir / PDF</button>
+  </div>
+  <div class="aviso-edicion">
+    Modo edición activo: haz clic sobre cualquier texto y corrígelo. Cuando acabes, pulsa
+    «Guardar copia editada» para descargar el archivo con tus cambios incluidos (ese es el que debes
+    enviar a los jugadores).
+  </div>
+
+  <header class="hero">
+    <h1 data-edit="titulo">Pre-pretemporada · Cadete A</h1>
+    <p data-edit="subtitulo">Del 11 al 31 de agosto · Entrena en casa · Llega listo al primer entreno del 1 de septiembre</p>
+    <div class="datos">
+      <div class="dato"><div class="num">3</div><div class="txt">Semanas</div></div>
+      <div class="dato"><div class="num">11</div><div class="txt">Sesiones</div></div>
+      <div class="dato"><div class="num">~1 h</div><div class="txt">Por sesión</div></div>
+      <div class="dato"><div class="num">0</div><div class="txt">Material necesario</div></div>
+    </div>
+    <div class="leyenda">
+      <span><span class="punto" style="background:var(--verde)"></span>Suave</span>
+      <span><span class="punto" style="background:var(--ambar)"></span>Media</span>
+      <span><span class="punto" style="background:var(--naranja)"></span>Fuerte</span>
+      <span><span class="punto" style="background:var(--rojo)"></span>Máxima</span>
+      <span class="pista-toque" style="color:var(--gris)">— Toca el día para ver tu entreno —</span>
+    </div>
+  </header>
+
+  <!-- ============ SEMANA 1 ============ -->
+  <section class="semana s1">
+    <div class="semana-cab">
+      <h2>Semana 1</h2>
+      <span class="fase">Puesta en marcha</span>
+      <span class="fechas">11 – 17 agosto · 3 entrenos</span>
+    </div>
+    <p class="semana-obj" data-edit="s1-obj">Volvemos a movernos y empezamos a coger fondo: dos salidas a correr suaves y una sesión de fuerza con balón. Nada de ir al límite todavía.</p>
+    <div class="calendario">
+      <div class="dia-nombre">Lun</div><div class="dia-nombre">Mar</div><div class="dia-nombre">Mié</div><div class="dia-nombre">Jue</div><div class="dia-nombre">Vie</div><div class="dia-nombre">Sáb</div><div class="dia-nombre">Dom</div>
+
+      <div class="descanso"><div class="fecha">Lun 11</div>Descanso</div>
+
+      <details class="entreno rpe5">
+        <summary>
+          <span class="fecha">Mar 12</span>
+          <span class="titulo-sesion" data-edit="s1a-t">Salir a correr suave</span>
+          <span class="chips"><span class="chip">60'</span><span class="chip rpe">RPE 5</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1a-b1d">Movilidad de tobillos, caderas y espalda + 5' de trote muy suave para entrar en calor.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s1a-b2">Rodaje continuo</b><span class="min">30'</span><p data-edit="s1a-b2d">Sal a correr a ritmo cómodo: tienes que poder hablar mientras corres. Si te ahogas, baja el ritmo. Hoy toca coger fondo, no ir rápido.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s1a-b3">Core</b><span class="min">10'</span><p data-edit="s1a-b3d">3 rondas: plancha 30" · plancha lateral 20" por lado · puente glúteo ×15.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1a-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1a-b4d">Isquios, cuádriceps, aductores y gemelos, 30" por músculo.</p></div></div>
+        </div>
+      </details>
+
+      <details class="entreno rpe5">
+        <summary>
+          <span class="fecha">Mié 13</span>
+          <span class="titulo-sesion" data-edit="s1b-t">Fuerza + técnica</span>
+          <span class="chips"><span class="chip">65'</span><span class="chip rpe">RPE 5</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1b-b1d">Movilidad general + 2 series de 10 sentadillas sin peso.</p></div></div>
+          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s1b-b2">Fuerza con tu cuerpo</b><span class="min">25'</span><p data-edit="s1b-b2d">3 rondas: sentadilla ×15 · zancada ×10 por pierna · flexiones ×10-12 · remo con mochila ×12 · talones ×20. Descansa 1' entre rondas.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s1b-b3">Técnica con balón</b><span class="min">20'</span><p data-edit="s1b-b3d">Toques con todas las superficies, conducción con las dos piernas, pases contra una pared si tienes.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s1b-b4">Prevención</b><span class="min">10'</span><p data-edit="s1b-b4d">Nórdicos de isquios frenando con las manos 2×5 + equilibrio a una pierna con ojos cerrados 3×30".</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Jue 14</div>Descanso</div>
+
+      <details class="entreno rpe6">
+        <summary>
+          <span class="fecha">Vie 15</span>
+          <span class="titulo-sesion" data-edit="s1c-t">Salir a correr — fartlek</span>
+          <span class="chips"><span class="chip">55'</span><span class="chip rpe">RPE 6</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1c-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s1c-b1d">Movilidad + trote muy suave progresivo.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s1c-b2">Fartlek</b><span class="min">25'</span><p data-edit="s1c-b2d">Sal a correr con cambios de ritmo: 5 veces (3' a ritmo medio + 2' muy suave). El ritmo medio cuesta, pero aguantas.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s1c-b3">Balón libre</b><span class="min">10'</span><p data-edit="s1c-b3d">Al volver: toques, conducción suave y habilidad para no perder el toque.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s1c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s1c-b4d">Cadera, isquios y tobillos con calma.</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Sáb 16</div>Opcional: 20' de movilidad</div>
+      <div class="descanso"><div class="fecha">Dom 17</div>Descanso total</div>
+    </div>
+  </section>
+
+  <!-- ============ SEMANA 2 ============ -->
+  <section class="semana s2">
+    <div class="semana-cab">
+      <h2>Semana 2</h2>
+      <span class="fase">Subimos el ritmo</span>
+      <span class="fechas">18 – 24 agosto · 4 entrenos</span>
+    </div>
+    <p class="semana-obj" data-edit="s2-obj">Un punto más: tres salidas a correr para coger resistencia (intervalos, rodaje largo y HIIT) y una sesión de fuerza con la mochila cargada.</p>
+    <div class="calendario">
+      <div class="dia-nombre">Lun</div><div class="dia-nombre">Mar</div><div class="dia-nombre">Mié</div><div class="dia-nombre">Jue</div><div class="dia-nombre">Vie</div><div class="dia-nombre">Sáb</div><div class="dia-nombre">Dom</div>
+
+      <details class="entreno rpe6">
+        <summary>
+          <span class="fecha">Lun 18</span>
+          <span class="titulo-sesion" data-edit="s2a-t">Salir a correr — intervalos</span>
+          <span class="chips"><span class="chip">65'</span><span class="chip rpe">RPE 6</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2a-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2a-b1d">Movilidad + trote progresivo con 2-3 aceleraciones suaves.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2a-b2">Intervalos</b><span class="min">30'</span><p data-edit="s2a-b2d">4 veces: 5' a ritmo alto (te cuesta hablar) + 2' andando. También vale en escaleras.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2a-b3">Core avanzado</b><span class="min">15'</span><p data-edit="s2a-b3d">3 rondas: plancha con toque de hombro ×10 · plancha lateral con subida de cadera ×8 · V-ups ×10 · superman ×12.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s2a-b4d">Trote muy suave + estiramientos.</p></div></div>
+        </div>
+      </details>
+
+      <details class="entreno rpe6">
+        <summary>
+          <span class="fecha">Mar 19</span>
+          <span class="titulo-sesion" data-edit="s2b-t">Fuerza con mochila + técnica</span>
+          <span class="chips"><span class="chip">70'</span><span class="chip rpe">RPE 6</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2b-b1d">Movilidad + 2 series suaves de aproximación.</p></div></div>
+          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s2b-b2">Fuerza con mochila</b><span class="min">30'</span><p data-edit="s2b-b2d">4 rondas: sentadilla con mochila ×12 · zancada búlgara (pie en silla) ×8 por pierna · flexiones con pies elevados ×10 · remo con mochila ×12 · puente glúteo a una pierna ×10.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s2b-b3">Técnica</b><span class="min">20'</span><p data-edit="s2b-b3d">Conducción con cambios de ritmo, regate ante obstáculo, control orientado contra la pared.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2b-b4">Prevención</b><span class="min">10'</span><p data-edit="s2b-b4d">Nórdicos 2×6 · saltos a una pierna aterrizando suave 2×8 · aprieta un cojín entre las rodillas 3×20".</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Mié 20</div>Recuperación: paseo 30' o bici suave</div>
+
+      <details class="entreno rpe6">
+        <summary>
+          <span class="fecha">Jue 21</span>
+          <span class="titulo-sesion" data-edit="s2d-t">Salir a correr — rodaje largo</span>
+          <span class="chips"><span class="chip">65'</span><span class="chip rpe">RPE 6</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2d-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s2d-b1d">Movilidad general + trote muy suave para entrar en calor.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2d-b2">Rodaje progresivo</b><span class="min">35'</span><p data-edit="s2d-b2d">Sal a correr: 20' cómodo + 10' a ritmo medio (cuesta hablar, pero aguantas) + 5' muy suave para acabar. Es la salida larga de la semana.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s2d-b3">Core</b><span class="min">10'</span><p data-edit="s2d-b3d">3 rondas rápidas: plancha 30" · plancha lateral 20" por lado · V-ups ×10.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2d-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2d-b4d">Piernas completas, sobre todo isquios y gemelos.</p></div></div>
+        </div>
+      </details>
+
+      <details class="entreno rpe7">
+        <summary>
+          <span class="fecha">Vie 22</span>
+          <span class="titulo-sesion" data-edit="s2c-t">HIIT + agilidad</span>
+          <span class="chips"><span class="chip">60'</span><span class="chip rpe">RPE 7</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2c-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s2c-b1d">Completo y progresivo: movilidad, skipping y 3-4 aceleraciones al 70-80 %.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s2c-b2">HIIT</b><span class="min">20'</span><p data-edit="s2c-b2d">2 bloques de 8×(30" fuerte / 30" suave), con 3' de descanso entre bloques.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s2c-b3">Agilidad</b><span class="min">15'</span><p data-edit="s2c-b3d">Idas y vueltas de 5-10 m con zapatillas o botellas como conos: cambios de dirección y salidas desde el suelo.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s2c-b4">Estiramientos</b><span class="min">10'</span><p data-edit="s2c-b4d">Piernas completas, sobre todo isquios y gemelos.</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Sáb 23</div>Opcional: 20' de movilidad</div>
+      <div class="descanso"><div class="fecha">Dom 24</div>Descanso total</div>
+    </div>
+  </section>
+
+  <!-- ============ SEMANA 3 ============ -->
+  <section class="semana s3">
+    <div class="semana-cab">
+      <h2>Semana 3</h2>
+      <span class="fase">Modo competición</span>
+      <span class="fechas">25 – 31 agosto · 4 entrenos</span>
+    </div>
+    <p class="semana-obj" data-edit="s3-obj">La semana fuerte: sprints, saltos y ritmo alto para llegar activado al 1 de septiembre. El viernes bajamos para llegar frescos.</p>
+    <div class="calendario">
+      <div class="dia-nombre">Lun</div><div class="dia-nombre">Mar</div><div class="dia-nombre">Mié</div><div class="dia-nombre">Jue</div><div class="dia-nombre">Vie</div><div class="dia-nombre">Sáb</div><div class="dia-nombre">Dom</div>
+
+      <details class="entreno rpe7">
+        <summary>
+          <span class="fecha">Lun 25</span>
+          <span class="titulo-sesion" data-edit="s3a-t">Intervalos fuertes</span>
+          <span class="chips"><span class="chip">60'</span><span class="chip rpe">RPE 7</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3a-b1">Calentamiento</b><span class="min">12'</span><p data-edit="s3a-b1d">Progresivo con 3-4 aceleraciones al 80 %.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s3a-b2">Intervalos</b><span class="min">25'</span><p data-edit="s3a-b2d">6 veces: 2' fuerte + 90" muy suave. Cuesta acabar cada repetición, pero corre limpio.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s3a-b3">Core</b><span class="min">12'</span><p data-edit="s3a-b3d">3 rondas rápidas del core avanzado.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3a-b4">Vuelta a la calma</b><span class="min">10'</span><p data-edit="s3a-b4d">Trote suave + estiramientos.</p></div></div>
+        </div>
+      </details>
+
+      <details class="entreno rpe7">
+        <summary>
+          <span class="fecha">Mar 26</span>
+          <span class="titulo-sesion" data-edit="s3b-t">Fuerza + técnica rápida</span>
+          <span class="chips"><span class="chip">70'</span><span class="chip rpe">RPE 7</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3b-b1">Calentamiento</b><span class="min">10'</span><p data-edit="s3b-b1d">Movilidad + series de aproximación.</p></div></div>
+          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s3b-b2">Fuerza</b><span class="min">30'</span><p data-edit="s3b-b2d">La rutina con mochila de la semana 2 (4 rondas), subiendo rápido y bajando controlado.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s3b-b3">Técnica a tope</b><span class="min">20'</span><p data-edit="s3b-b3d">Los ejercicios de siempre pero a tu máxima velocidad sin perder calidad: conducción rápida, regates encadenados, pases fuertes.</p></div></div>
+          <div class="bloque"><span class="punto t-prevencion"></span><div><b data-edit="s3b-b4">Prevención</b><span class="min">10'</span><p data-edit="s3b-b4d">Nórdicos 2×6 + equilibrio a una pierna recibiendo y devolviendo el balón.</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Mié 27</div>Recuperación: paseo 30' o bici suave</div>
+
+      <details class="entreno rpe8">
+        <summary>
+          <span class="fecha">Jue 28</span>
+          <span class="titulo-sesion" data-edit="s3c-t">Sprints + saltos</span>
+          <span class="chips"><span class="chip">60'</span><span class="chip rpe">RPE 8</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3c-b1">Calentamiento largo</b><span class="min">15'</span><p data-edit="s3c-b1d">El más importante de todos: movilidad completa, técnica de carrera y 4-5 progresiones del 60 al 90 %. No te lo saltes.</p></div></div>
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s3c-b2">Sprints</b><span class="min">20'</span><p data-edit="s3c-b2d">8-10 sprints de 20-30 m al máximo, descansando 90" andando entre cada uno. Si notas algo raro en los isquios, PARA.</p></div></div>
+          <div class="bloque"><span class="punto t-fuerza"></span><div><b data-edit="s3c-b3">Saltos</b><span class="min">10'</span><p data-edit="s3c-b3d">Saltos verticales 3×5 · saltos laterales 3×8 · salto desde un escalón bajo aterrizando suave 2×5.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3c-b4">Estiramientos</b><span class="min">15'</span><p data-edit="s3c-b4d">Sesión completa, sin prisa.</p></div></div>
+        </div>
+      </details>
+
+      <details class="entreno rpe5">
+        <summary>
+          <span class="fecha">Vie 29</span>
+          <span class="titulo-sesion" data-edit="s3d-t">Suave + balón libre</span>
+          <span class="chips"><span class="chip">50'</span><span class="chip rpe">RPE 5</span></span>
+          <span class="abrir">Ver entreno ▾</span>
+        </summary>
+        <div class="cuerpo-sesion">
+          <div class="bloque"><span class="punto t-condicional"></span><div><b data-edit="s3d-b1">Trote suave</b><span class="min">15'</span><p data-edit="s3d-b1d">Ritmo de conversación, solo para mover las piernas.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3d-b2">Movilidad</b><span class="min">15'</span><p data-edit="s3d-b2d">Caderas, tobillos, espalda e isquios. Lento y amplio.</p></div></div>
+          <div class="bloque"><span class="punto t-tecnica"></span><div><b data-edit="s3d-b3">Balón libre</b><span class="min">15'</span><p data-edit="s3d-b3d">Toques, habilidad, lo que más te guste. Disfruta: el lunes empezamos.</p></div></div>
+          <div class="bloque"><span class="punto t-movilidad"></span><div><b data-edit="s3d-b4">Estiramientos</b><span class="min">5'</span><p data-edit="s3d-b4d">Breves y generales.</p></div></div>
+        </div>
+      </details>
+
+      <div class="descanso"><div class="fecha">Sáb 30</div>Opcional: 20' de movilidad</div>
+      <div class="descanso"><div class="fecha">Dom 31</div>Descanso total. ¡Mañana empezamos!</div>
+    </div>
+  </section>
+
+  <!-- ============ RPE ============ -->
+  <section class="seccion">
+    <h2>¿Cómo de duro? La escala del esfuerzo (RPE)</h2>
+    <p style="font-size:14px;color:var(--tinta-2)" data-edit="rpe-intro">Cada entreno tiene un número del 1 al 10: es lo cansado que debes acabar. Al terminar, piensa qué número le pondrías tú. Si siempre te pasas de 2 o más, haz menos rondas (nunca peor técnica) y avisa al míster.</p>
+    <div class="barra-rpe">
+      <div style="background:var(--verde)">1</div><div style="background:var(--verde)">2</div><div style="background:var(--verde)">3</div>
+      <div style="background:var(--ambar)">4</div><div style="background:var(--ambar)">5</div><div style="background:var(--ambar)">6</div>
+      <div style="background:var(--naranja)">7</div><div style="background:var(--naranja)">8</div>
+      <div style="background:var(--rojo)">9</div><div style="background:var(--rojo)">10</div>
+    </div>
+    <div class="rpe-textos">
+      <span>Puedes cantar</span><span>Puedes hablar</span><span>Frases cortas</span><span>Sin palabras</span>
+    </div>
+  </section>
+
+  <!-- ============ CONSEJOS ============ -->
+  <section class="seccion">
+    <h2 data-edit="precauciones-t">Precauciones</h2>
+    <div class="tarjetas">
+      <div class="tarjeta">
+        <h3 data-edit="c2-t">Priorizamos cuidar el cuerpo</h3>
+        <ul>
+          <li data-edit="c2-l2">Agua antes, durante y después</li>
+          <li data-edit="c2-l3">Come algo al acabar (fruta + bocadillo va perfecto)</li>
+          <li data-edit="c2-l4">Entrena pronto o al atardecer: evita el calor fuerte</li>
+        </ul>
+      </div>
+      <div class="tarjeta">
+        <h3 data-edit="c3-t">Si algo duele, para</h3>
+        <p data-edit="c3-p">Molestia que sigue al día siguiente = descanso y mensaje al entrenador. Llegar al día 1 sano vale más que cualquier entreno extra.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var CLAVE = "pretemporada-cadete-edits";
+
+  function cargarEdiciones() {
+    try {
+      var datos = JSON.parse(localStorage.getItem(CLAVE) || "{}");
+      Object.keys(datos).forEach(function (id) {
+        var el = document.querySelector('[data-edit="' + id + '"]');
+        if (el) el.innerHTML = datos[id];
+      });
+    } catch (e) { /* almacenamiento no disponible: se ignora */ }
+  }
+
+  function guardarEdicion(el) {
+    try {
+      var datos = JSON.parse(localStorage.getItem(CLAVE) || "{}");
+      datos[el.getAttribute("data-edit")] = el.innerHTML;
+      localStorage.setItem(CLAVE, JSON.stringify(datos));
+    } catch (e) { /* almacenamiento no disponible: se ignora */ }
+  }
+
+  cargarEdiciones();
+
+  var editando = false;
+  document.getElementById("btn-editar").addEventListener("click", function () {
+    editando = !editando;
+    document.body.classList.toggle("editando", editando);
+    this.textContent = editando ? "Terminar edición" : "Editar textos";
+    document.querySelectorAll("[data-edit]").forEach(function (el) {
+      el.contentEditable = editando ? "true" : "false";
+    });
+  });
+
+  document.addEventListener("input", function (e) {
+    var el = e.target.closest && e.target.closest("[data-edit]");
+    if (el) guardarEdicion(el);
+  });
+
+  document.getElementById("btn-guardar").addEventListener("click", function () {
+    var clon = document.documentElement.cloneNode(true);
+    clon.querySelectorAll("[data-edit]").forEach(function (el) {
+      el.removeAttribute("contenteditable");
+    });
+    var cuerpo = clon.querySelector("body");
+    if (cuerpo) cuerpo.classList.remove("editando");
+    var boton = clon.querySelector("#btn-editar");
+    if (boton) boton.textContent = "Editar textos";
+    var html = "<!DOCTYPE html>\n" + clon.outerHTML;
+    var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+    var enlace = document.createElement("a");
+    enlace.href = URL.createObjectURL(blob);
+    enlace.download = "pretemporada-cadete-jugadores.html";
+    document.body.appendChild(enlace);
+    enlace.click();
+    document.body.removeChild(enlace);
+    URL.revokeObjectURL(enlace.href);
+  });
+
+  var abiertos = [];
+  window.addEventListener("beforeprint", function () {
+    abiertos = [];
+    document.querySelectorAll("details.entreno").forEach(function (d) {
+      abiertos.push(d.open);
+      d.open = true;
+    });
+  });
+  window.addEventListener("afterprint", function () {
+    document.querySelectorAll("details.entreno").forEach(function (d, i) {
+      d.open = abiertos[i];
+    });
+  });
+  document.getElementById("btn-imprimir").addEventListener("click", function () {
+    window.print();
+  });
+})();
+</script>
+</body>
+</html>
